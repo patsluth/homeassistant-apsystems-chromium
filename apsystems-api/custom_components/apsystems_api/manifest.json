@@ -1,0 +1,10 @@
+{
+  "domain": "apsystems_api",
+  "name": "APSystems API",
+  "documentation": "https://github.com/patsluth/apsystems-api",
+  "issue_tracker": "https://github.com/patsluth/apsystems-api/issues",
+  "dependencies": [],
+  "config_flow": true,
+  "codeowners": ["@patsluth"],
+  "requirements": []
+}
