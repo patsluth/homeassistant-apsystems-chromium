@@ -14,31 +14,11 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup binary_sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
-
-    _LOGGER.error(
-        "PAT TEST 123 %s",
-        str(entry)
-    )
-
-    __options = dict(entry.options)
-    _LOGGER.error(
-        "PAT TEST 123 %s",
-        str(__options)
-    )
-
-
     async_add_devices([APSystemsApiBinarySensor(coordinator, entry)])
 
 
 class APSystemsApiBinarySensor(APSystemsApiEntity, BinarySensorEntity):
     """apsystems_api binary_sensor class."""
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     _LOGGER.error(
-    #         "PAT TEST %s",
-    #         str(self.config_entry)
-    #     )
 
     @property
     def name(self):

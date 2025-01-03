@@ -13,6 +13,20 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     _LOGGER.log(logging.WARN, f"PAT TEST {DOMAIN}")
+    _LOGGER.warning(
+        "PAT TEST 123 %s",
+        str(entry)
+    )
+
+    __options = dict(entry.options)
+    _LOGGER.warning(
+        "PAT TEST 123 %s",
+        str(__options)
+    )
+    _LOGGER.warning(
+        "PAT TEST 123 %s",
+        str(dir(entry))
+    )
     async_add_devices([APSystemsApiSensor(coordinator, entry)])
 
 
