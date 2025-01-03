@@ -1,6 +1,6 @@
 """Binary sensor platform for APSystems API."""
 from homeassistant.components.binary_sensor import BinarySensorEntity
-_LOGGER: logging.Logger = logging.getLogger(__package__)
+import logging
 
 from .const import BINARY_SENSOR
 from .const import BINARY_SENSOR_DEVICE_CLASS
@@ -8,10 +8,25 @@ from .const import DEFAULT_NAME
 from .const import DOMAIN
 from .entity import APSystemsApiEntity
 
+_LOGGER: logging.Logger = logging.getLogger(__package__)
+
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup binary_sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
+
+    _LOGGER.error(
+        "PAT TEST 123 %s",
+        str(entry)
+    )
+
+    __options = dict(entry.options)
+    _LOGGER.error(
+        "PAT TEST 123 %s",
+        str(__options)
+    )
+
+
     async_add_devices([APSystemsApiBinarySensor(coordinator, entry)])
 
 
@@ -27,17 +42,6 @@ class APSystemsApiBinarySensor(APSystemsApiEntity, BinarySensorEntity):
 
     @property
     def name(self):
-        __options = dict(self.config_entry.options)
-
-        _LOGGER.error(
-            "PAT TEST name %s",
-            str(self.config_entry)
-        )
-        _LOGGER.error(
-            "PAT TEST name %s",
-            str(__options)
-        )
-
         """Return the name of the binary_sensor."""
         return f"{DEFAULT_NAME}_{BINARY_SENSOR}"
 
