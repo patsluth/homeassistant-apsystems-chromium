@@ -4,11 +4,15 @@ from .const import DOMAIN
 from .const import ICON
 from .const import SENSOR
 from .entity import APSystemsApiEntity
+import logging
+
+_LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    _LOGGER.log(logging.WARN, f"PAT TEST {DOMAIN}")
     async_add_devices([APSystemsApiSensor(coordinator, entry)])
 
 
