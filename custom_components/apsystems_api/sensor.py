@@ -24,7 +24,7 @@ async def async_setup_entry(hass, entry, async_add_devices):
         str(__options)
     )
     _LOGGER.warning(
-        "PAT TEST 123 %s",
+        "PAT TEST 456 %s",
         str(dir(entry))
     )
     async_add_devices([APSystemsApiSensor(coordinator, entry)])

@@ -11,6 +11,7 @@ from .entity import APSystemsApiEntity
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
+    return
     async_add_devices([APSystemsApiBinarySwitch(coordinator, entry)])
 
 
