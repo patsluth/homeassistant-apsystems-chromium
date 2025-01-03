@@ -18,15 +18,26 @@ async def async_setup_entry(hass, entry, async_add_devices):
 class APSystemsApiBinarySensor(APSystemsApiEntity, BinarySensorEntity):
     """apsystems_api binary_sensor class."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        _LOGGER.error(
-            "PAT TEST %s",
-            str(self.config_entry)
-        )
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     _LOGGER.error(
+    #         "PAT TEST %s",
+    #         str(self.config_entry)
+    #     )
 
     @property
     def name(self):
+        __options = dict(self.config_entry.options)
+
+        _LOGGER.error(
+            "PAT TEST name %s",
+            str(self.config_entry)
+        )
+        _LOGGER.error(
+            "PAT TEST name %s",
+            str(__options)
+        )
+
         """Return the name of the binary_sensor."""
         return f"{DEFAULT_NAME}_{BINARY_SENSOR}"
 
