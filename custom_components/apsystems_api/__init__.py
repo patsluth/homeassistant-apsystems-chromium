@@ -17,8 +17,10 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
 from .api import APSystemsApiApiClient
-from .const import CONF_PASSWORD
-from .const import CONF_USERNAME
+from .const import CONF_API_APP_ID
+from .const import CONF_API_APP_SECRET
+from .const import CONF_SID
+from .const import CONF_ECU_ID
 from .const import DOMAIN
 from .const import PLATFORMS
 from .const import STARTUP_MESSAGE
@@ -39,11 +41,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
 
-    username = entry.data.get(CONF_USERNAME)
-    password = entry.data.get(CONF_PASSWORD)
+    api_app_id = entry.data.get(CONF_API_APP_ID)
+    api_app_secret = entry.data.get(CONF_API_APP_SECRET)
+    sid = entry.data.get(CONF_SID)
+    ecu_id = entry.data.get(CONF_ECU_ID)
 
     session = async_get_clientsession(hass)
-    client = APSystemsApiApiClient(username, password, session)
+    client = APSystemsApiApiClient(
+        api_app_id=api_app_id,
+        api_app_secret=api_app_secret,
+        sid=sid,
+        ecu_id=ecu_id,
+        session=session
+    )
 
     coordinator = APSystemsApiDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
