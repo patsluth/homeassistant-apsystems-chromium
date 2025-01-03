@@ -6,5 +6,6 @@
   "dependencies": [],
   "config_flow": true,
   "codeowners": ["@patsluth"],
-  "requirements": []
+  "requirements": [],
+  "vesrion": "1.0.0"
 }
