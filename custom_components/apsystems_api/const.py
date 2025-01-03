@@ -23,8 +23,10 @@ PLATFORMS = [BINARY_SENSOR, SENSOR, SWITCH]
 
 # Configuration and options
 CONF_ENABLED = "enabled"
-CONF_USERNAME = "username"
-CONF_PASSWORD = "password"
+CONF_API_APP_ID = "api_app_id"
+CONF_API_APP_SECRET = "api_app_secret"
+CONF_SID = "sid"
+CONF_ECU_ID = "ecu_id"
 
 # Defaults
 DEFAULT_NAME = DOMAIN

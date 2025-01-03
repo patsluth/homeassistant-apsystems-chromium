@@ -15,13 +15,22 @@ HEADERS = {"Content-type": "application/json; charset=UTF-8"}
 
 
 class APSystemsApiApiClient:
+    base_url: str = "https://api.apsystemsema.com:9282"
+    api_app_id: str
+    api_app_secret: str
+    sid: str
+    ecu_id: str
+    session: aiohttp.ClientSession
+
     def __init__(
-        self, username: str, password: str, session: aiohttp.ClientSession
+        self, api_app_id: str, api_app_secret: str, sid: str, ecu_id: str, session: aiohttp.ClientSession
     ) -> None:
         """Sample API Client."""
-        self._username = username
-        self._passeword = password
-        self._session = session
+        self.api_app_id = api_app_id
+        self.api_app_secret = api_app_secret
+        self.sid = sid
+        self.ecu_id = ecu_id
+        self.session = session
 
     async def async_get_data(self) -> dict:
         """Get data from the API."""
@@ -40,17 +49,17 @@ class APSystemsApiApiClient:
         try:
             async with async_timeout.timeout(TIMEOUT, loop=asyncio.get_event_loop()):
                 if method == "get":
-                    response = await self._session.get(url, headers=headers)
+                    response = await self.session.get(url, headers=headers)
                     return await response.json()
 
                 elif method == "put":
-                    await self._session.put(url, headers=headers, json=data)
+                    await self.session.put(url, headers=headers, json=data)
 
                 elif method == "patch":
-                    await self._session.patch(url, headers=headers, json=data)
+                    await self.session.patch(url, headers=headers, json=data)
 
                 elif method == "post":
-                    await self._session.post(url, headers=headers, json=data)
+                    await self.session.post(url, headers=headers, json=data)
 
         except asyncio.TimeoutError as exception:
             _LOGGER.error(

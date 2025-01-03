@@ -1,5 +1,6 @@
 """Binary sensor platform for APSystems API."""
 from homeassistant.components.binary_sensor import BinarySensorEntity
+_LOGGER: logging.Logger = logging.getLogger(__package__)
 
 from .const import BINARY_SENSOR
 from .const import BINARY_SENSOR_DEVICE_CLASS
@@ -16,6 +17,13 @@ async def async_setup_entry(hass, entry, async_add_devices):
 
 class APSystemsApiBinarySensor(APSystemsApiEntity, BinarySensorEntity):
     """apsystems_api binary_sensor class."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        _LOGGER.error(
+            "PAT TEST %s",
+            str(self.config_entry)
+        )
 
     @property
     def name(self):
