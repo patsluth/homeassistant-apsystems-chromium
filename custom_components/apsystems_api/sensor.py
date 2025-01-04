@@ -41,11 +41,9 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
         self.data_key = data_key
         super().__init__(coordinator, config_entry)
         
-    @property
-    def unique_id(self):
-        _LOGGER.warning("PAT TEST unique_id %s", str(super().unique_id))
-        _LOGGER.warning("PAT TEST unique_id %s", str(super(APSystemsApiSystemSummarySensor, self).unique_id))
-        return f"{super().unique_id}_{self.name}"
+    # @property
+    # def unique_id(self):
+    #     return f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
 
     @property
     def name(self):

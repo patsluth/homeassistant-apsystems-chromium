@@ -25,7 +25,7 @@ from .const import DOMAIN
 from .const import PLATFORMS
 from .const import STARTUP_MESSAGE
 
-SCAN_INTERVAL = timedelta(seconds=60)
+SCAN_INTERVAL = timedelta(minutes=60)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
