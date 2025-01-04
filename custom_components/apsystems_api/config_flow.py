@@ -4,7 +4,7 @@ from homeassistant import config_entries
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
-from .api import APSystemsApiApiClient
+from .api import APSystemsApiSystemSummaryClient
 from .const import CONF_API_APP_ID
 from .const import CONF_API_APP_SECRET
 from .const import CONF_SID
@@ -73,7 +73,7 @@ class APSystemsApiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
         """Return true if credentials is valid."""
         try:
             session = async_create_clientsession(self.hass)
-            client = APSystemsApiApiClient(
+            client = APSystemsApiSystemSummaryClient(
                 api_app_id=api_app_id,
                 api_app_secret=api_app_secret,
                 sid=sid,
