@@ -13,7 +13,7 @@ from .api import APSystemsApiBase
 from homeassistant.components.sensor import (
     SensorDeviceClass,
 )
-
+from homeassistant.helpers.entity import generate_entity_id
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
@@ -39,6 +39,8 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
 
     def __init__(self, coordinator, config_entry, data_key: str):
         self.data_key = data_key
+        self.entity_id = generate_entity_id("sensor.{}", self.name)
+        _LOGGER.warning("PAT TEST self.entity_id  %s", str(self.entity_id))
         super().__init__(coordinator, config_entry)
         
     # @property
@@ -47,10 +49,10 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
 
 
 
-    @property
-    def entity_id(self):
-        _LOGGER.warning("PAT TEST entity_id %s", str(super(APSystemsApiSystemSummarySensor, self).entity_id))
-        return f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
+    # @property
+    # def entity_id(self):
+    #     _LOGGER.warning("PAT TEST entity_id %s", str(super(APSystemsApiSystemSummarySensor, self).entity_id))
+    #     return f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
 
     @property
     def name(self):

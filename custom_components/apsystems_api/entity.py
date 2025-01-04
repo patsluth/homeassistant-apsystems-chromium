@@ -32,6 +32,6 @@ class APSystemsApiEntity(CoordinatorEntity):
         return {
             "attribution": ATTRIBUTION,
             # "id": str(self.coordinator.data.get("id")),
-            "id": self.entity_id,
+            "id": self.unique_id,
             "integration": DOMAIN,
         }
