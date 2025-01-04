@@ -5,6 +5,11 @@ from .const import ICON
 from .const import SENSOR
 from .entity import APSystemsApiEntity
 import logging
+from homeassistant.const import (
+    STATE_UNAVAILABLE,
+)
+from dataclasses import fields
+from .api import APSystemsApiBase
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -18,16 +23,25 @@ async def async_setup_entry(hass, entry, async_add_devices):
     __options = dict(entry.options)
     _LOGGER.warning("PAT TEST 123 %s", str(__options))
     _LOGGER.warning("PAT TEST 456 %s", str(dir(entry)))
-    async_add_devices([APSystemsApiSystemSummarySensor(coordinator, entry)])
+    _devices = [
+        APSystemsApiSystemSummarySensor(coordinator, entry, data_key=field.name) 
+        for field in fields(APSystemsApiBase.SystemSummaryData)
+    ]
+    async_add_devices(_devices)
 
 
 class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
     """apsystems_api Sensor class."""
+    data_key: str
+
+    def __init__(self, coordinator, config_entry, data_key: str):
+        self.data_key = data_key
+        super().__init__(coordinator, config_entry)
 
     @property
     def name(self):
         """Return the name of the sensor."""
-        return f"{DEFAULT_NAME}_{SENSOR}"
+        return f"{DEFAULT_NAME}_{SENSOR}_{self.data_key}"
 
     @property
     def available(self) -> bool:
@@ -46,10 +60,11 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
             "PAT TEST XYZ %s %s", str(self.coordinator), str(self.coordinator.__class__)
         )
         _LOGGER.warning("PAT TEST XYZ %s", str(self.coordinator.data))
-        if self.coordinator.data:
+        if self.coordinator.data and (value := getattr(self.coordinator.data, self.data_key, None)):
+            return value
             return self.coordinator.data.month
 
-        return "12345"  # self.coordinator.data.get("body")
+        return STATE_UNAVAILABLE  # self.coordinator.data.get("body")
 
     @property
     def icon(self):

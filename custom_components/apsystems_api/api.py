@@ -30,10 +30,10 @@ class APSystemsApiResponseException(Exception):
 class APSystemsApiBase:
     @dataclass
     class SystemSummaryData:
-        month: float
-        year: float
-        today: float
-        lifetime: float
+        today: str
+        month: str
+        year: str
+        lifetime: str
 
     base_url: str = "https://api.apsystemsema.com:9282"
     api_app_id: str
