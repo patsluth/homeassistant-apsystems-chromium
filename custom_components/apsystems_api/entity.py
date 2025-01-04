@@ -31,7 +31,7 @@ class APSystemsApiEntity(CoordinatorEntity):
         """Return the state attributes."""
         return {
             "attribution": ATTRIBUTION,
-            "id": str(self.coordinator.data.get("id")),
-            # "id": self.unique_id,
+            # "id": str(self.coordinator.data.get("id")),
+            "id": self.entity_id,
             "integration": DOMAIN,
         }

@@ -45,6 +45,13 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
     # def unique_id(self):
     #     return f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
 
+
+
+    @property
+    def entity_id(self):
+        _LOGGER.warning("PAT TEST entity_id %s", str(super(APSystemsApiSystemSummarySensor, self).entity_id))
+        return f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
+
     @property
     def name(self):
         """Return the name of the sensor."""
