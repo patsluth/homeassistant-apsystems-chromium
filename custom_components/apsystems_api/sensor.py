@@ -45,7 +45,9 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
         _LOGGER.warning(
             "PAT TEST XYZ %s %s", str(self.coordinator), str(self.coordinator.__class__)
         )
-        _LOGGER.warning("PAT TEST XYZ %s", str(self.coordinator.data.get("body")))
+        _LOGGER.warning("PAT TEST XYZ %s", str(self.coordinator.data))
+        if self.coordinator.data:
+            return self.coordinator.data.month
 
         return "12345"  # self.coordinator.data.get("body")
 

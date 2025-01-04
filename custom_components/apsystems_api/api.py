@@ -149,25 +149,25 @@ class APSystemsApiBase:
             )
         return APSystemsApiBase.SystemSummaryData(**data["data"])
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--api_app_id", type=str, default=os.environ.get('APSYSTEMS_API_APP_ID'))
-    parser.add_argument("--api_app_secret", type=str, default=os.environ.get('APSYSTEMS_API_APP_SECRET'))
-    parser.add_argument("--sid", type=str, default=os.environ.get('APSYSTEMS_SID'))
-    parser.add_argument("--ecu_id", type=str, default=os.environ.get('APSYSTEMS_ECU_ID'))
-    args = parser.parse_args()
+# if __name__ == "__main__":
+#     parser = argparse.ArgumentParser()
+#     parser.add_argument("--api_app_id", type=str, default=os.environ.get('APSYSTEMS_API_APP_ID'))
+#     parser.add_argument("--api_app_secret", type=str, default=os.environ.get('APSYSTEMS_API_APP_SECRET'))
+#     parser.add_argument("--sid", type=str, default=os.environ.get('APSYSTEMS_SID'))
+#     parser.add_argument("--ecu_id", type=str, default=os.environ.get('APSYSTEMS_ECU_ID'))
+#     args = parser.parse_args()
 
-    api = APSystemsApiBase(
-        api_app_id=args.api_app_id,
-        api_app_secret=args.api_app_secret,
-        sid=args.sid,
-        ecu_id=args.ecu_id,
-    )
+#     api = APSystemsApiBase(
+#         api_app_id=args.api_app_id,
+#         api_app_secret=args.api_app_secret,
+#         sid=args.sid,
+#         ecu_id=args.ecu_id,
+#     )
 
-    print("system_summary", api.system_summary())
-    print("system_summary", api.ecu_minutely_energy())
-    print("system_summary", api.ecu_minutely_energy().latest_power)
-    print("system_summary", api.ecu_minutely_energy().latest_energy)
+#     print("system_summary", api.system_summary())
+#     print("system_summary", api.ecu_minutely_energy())
+#     print("system_summary", api.ecu_minutely_energy().latest_power)
+#     print("system_summary", api.ecu_minutely_energy().latest_energy)
 
 
 class APSystemsApiSystemSummaryClient(APSystemsApiBase):
