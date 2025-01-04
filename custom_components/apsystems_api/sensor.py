@@ -40,19 +40,17 @@ class APSystemsApiSensor(APSystemsApiEntity):
 
     @property
     def available(self) -> bool:
-        _LOGGER.warning(
-            "PAT TEST AVAILABLE",
-        )
+        _LOGGER.warning("PAT TEST AVAILABLE")
         return True
 
     @property
     def state(self):
         """Return the state of the sensor."""
         
-        _LOGGER.warning(
-            "PAT TEST XYZ %s",
-            str(self)
-        )
+        # _LOGGER.warning(
+        #     "PAT TEST XYZ %s",
+        #     str(self)
+        # )
         _LOGGER.warning(
             "PAT TEST XYZ %s %s",
             str(self.coordinator),
