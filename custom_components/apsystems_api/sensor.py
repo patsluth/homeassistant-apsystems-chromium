@@ -39,7 +39,11 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
 
     def __init__(self, coordinator, config_entry, data_key: str):
         self.data_key = data_key
-        self.entity_id = generate_entity_id("sensor.{}", self.name)
+        self.entity_id = generate_entity_id(
+            entity_id_format="sensor.{}", 
+            name=self.name,
+            hass=coordinator.hass
+        )
         _LOGGER.warning("PAT TEST self.entity_id  %s", str(self.entity_id))
         super().__init__(coordinator, config_entry)
         
