@@ -10,6 +10,9 @@ from homeassistant.const import (
 )
 from dataclasses import fields
 from .api import APSystemsApiBase
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+)
 
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
@@ -37,6 +40,10 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
     def __init__(self, coordinator, config_entry, data_key: str):
         self.data_key = data_key
         super().__init__(coordinator, config_entry)
+        
+    @property
+    def unique_id(self):
+        return f"{self.config_entry.entry_id}_{self.name}"
 
     @property
     def name(self):
@@ -50,7 +57,6 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
 
     @property
     def state(self):
-        """Return the state of the sensor."""
 
         # _LOGGER.warning(
         #     "PAT TEST XYZ %s",
@@ -68,13 +74,11 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
 
     @property
     def icon(self):
-        """Return the icon of the sensor."""
         return ICON
 
     @property
     def device_class(self):
-        """Return de device class of the sensor."""
-        return "apsystems_api__custom_device_class"
+        return SensorDeviceClass.ENERGY
 
     # async def async_update(self) -> None:
     #     """Update the entity.
