@@ -41,7 +41,22 @@ class APSystemsApiSensor(APSystemsApiEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        return self.coordinator.data.get("body")
+        
+        _LOGGER.warning(
+            "PAT TEST XYZ %s",
+            str(self)
+        )
+        _LOGGER.warning(
+            "PAT TEST XYZ %s %s",
+            str(self.coordinator),
+            str(self.coordinator.__class__)
+        )
+        _LOGGER.warning(
+            "PAT TEST XYZ %s",
+            str(self.coordinator.data.get("body"))
+        )
+
+        return "12345" #self.coordinator.data.get("body")
 
     @property
     def icon(self):
@@ -53,24 +68,16 @@ class APSystemsApiSensor(APSystemsApiEntity):
         """Return de device class of the sensor."""
         return "apsystems_api__custom_device_class"
 
-    async def async_update(self) -> None:
-        """Update the entity.
+    # async def async_update(self) -> None:
+    #     """Update the entity.
 
-        Only used by the generic entity update service.
-        """
-        # Ignore manual update requests if the entity is disabled
-        # if not self.enabled:
-        #     return
+    #     Only used by the generic entity update service.
+    #     """
+    #     # Ignore manual update requests if the entity is disabled
+    #     # if not self.enabled:
+    #     #     return
 
-        _LOGGER.warning(
-            "PAT TEST XYZ %s",
-            str(self)
-        )
-        _LOGGER.warning(
-            "PAT TEST XYZ %s %s",
-            str(self.coordinator),
-            str(self.coordinator.__class__)
-        )
+        
 
-        await super().async_update()
-        # await self.coordinator.async_request_refresh()
+    #     await super().async_update()
+    #     # await self.coordinator.async_request_refresh()
