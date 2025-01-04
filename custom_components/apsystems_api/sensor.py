@@ -13,24 +13,15 @@ async def async_setup_entry(hass, entry, async_add_devices):
     """Setup sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
     _LOGGER.log(logging.WARN, f"PAT TEST {DOMAIN}")
-    _LOGGER.warning(
-        "PAT TEST 123 %s",
-        str(entry)
-    )
+    _LOGGER.warning("PAT TEST 123 %s", str(entry))
 
     __options = dict(entry.options)
-    _LOGGER.warning(
-        "PAT TEST 123 %s",
-        str(__options)
-    )
-    _LOGGER.warning(
-        "PAT TEST 456 %s",
-        str(dir(entry))
-    )
-    async_add_devices([APSystemsApiSensor(coordinator, entry)])
+    _LOGGER.warning("PAT TEST 123 %s", str(__options))
+    _LOGGER.warning("PAT TEST 456 %s", str(dir(entry)))
+    async_add_devices([APSystemsApiSystemSummarySensor(coordinator, entry)])
 
 
-class APSystemsApiSensor(APSystemsApiEntity):
+class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
     """apsystems_api Sensor class."""
 
     @property
@@ -46,22 +37,17 @@ class APSystemsApiSensor(APSystemsApiEntity):
     @property
     def state(self):
         """Return the state of the sensor."""
-        
+
         # _LOGGER.warning(
         #     "PAT TEST XYZ %s",
         #     str(self)
         # )
         _LOGGER.warning(
-            "PAT TEST XYZ %s %s",
-            str(self.coordinator),
-            str(self.coordinator.__class__)
+            "PAT TEST XYZ %s %s", str(self.coordinator), str(self.coordinator.__class__)
         )
-        _LOGGER.warning(
-            "PAT TEST XYZ %s",
-            str(self.coordinator.data.get("body"))
-        )
+        _LOGGER.warning("PAT TEST XYZ %s", str(self.coordinator.data.get("body")))
 
-        return "12345" #self.coordinator.data.get("body")
+        return "12345"  # self.coordinator.data.get("body")
 
     @property
     def icon(self):
@@ -81,8 +67,6 @@ class APSystemsApiSensor(APSystemsApiEntity):
     #     # Ignore manual update requests if the entity is disabled
     #     # if not self.enabled:
     #     #     return
-
-        
 
     #     await super().async_update()
     #     # await self.coordinator.async_request_refresh()

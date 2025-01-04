@@ -10,7 +10,7 @@ from custom_components.apsystems_api import (
     async_unload_entry,
 )
 from custom_components.apsystems_api import (
-    APSystemsApiDataUpdateCoordinator,
+    APSystemsApiSystemSummaryDataUpdateCoordinator,
 )
 from custom_components.apsystems_api.const import (
     DOMAIN,
@@ -32,19 +32,21 @@ async def test_setup_unload_and_reload_entry(hass, bypass_get_data):
     config_entry = MockConfigEntry(domain=DOMAIN, data=MOCK_CONFIG, entry_id="test")
 
     # Set up the entry and assert that the values set during setup are where we expect
-    # them to be. Because we have patched the APSystemsApiDataUpdateCoordinator.async_get_data
+    # them to be. Because we have patched the APSystemsApiSystemSummaryDataUpdateCoordinator.async_get_data
     # call, no code from custom_components/apsystems_api/api.py actually runs.
     assert await async_setup_entry(hass, config_entry)
     assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
     assert (
-        type(hass.data[DOMAIN][config_entry.entry_id]) == APSystemsApiDataUpdateCoordinator
+        type(hass.data[DOMAIN][config_entry.entry_id])
+        == APSystemsApiSystemSummaryDataUpdateCoordinator
     )
 
     # Reload the entry and assert that the data from above is still there
     assert await async_reload_entry(hass, config_entry) is None
     assert DOMAIN in hass.data and config_entry.entry_id in hass.data[DOMAIN]
     assert (
-        type(hass.data[DOMAIN][config_entry.entry_id]) == APSystemsApiDataUpdateCoordinator
+        type(hass.data[DOMAIN][config_entry.entry_id])
+        == APSystemsApiSystemSummaryDataUpdateCoordinator
     )
 
     # Unload the entry and verify that the data has been removed

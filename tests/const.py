@@ -13,8 +13,8 @@ from custom_components.apsystems_api.const import (
 )
 
 MOCK_CONFIG = {
-    CONF_API_APP_ID: "test", 
+    CONF_API_APP_ID: "test",
     CONF_API_APP_SECRET: "test",
     CONF_SID: "test",
-    CONF_ECU_ID: "test"
+    CONF_ECU_ID: "test",
 }

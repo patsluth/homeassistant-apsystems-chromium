@@ -33,15 +33,13 @@ class APSystemsApiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             valid = await self._test_credentials(
-                user_input[CONF_API_APP_ID], 
+                user_input[CONF_API_APP_ID],
                 user_input[CONF_API_APP_SECRET],
                 user_input[CONF_SID],
                 user_input[CONF_ECU_ID],
             )
             if valid:
-                return self.async_create_entry(
-                    title="APSystems API", data=user_input
-                )
+                return self.async_create_entry(title="APSystems API", data=user_input)
             else:
                 self._errors["base"] = "auth"
 
@@ -60,16 +58,18 @@ class APSystemsApiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema(
                 {
-                    vol.Required(CONF_API_APP_ID): str, 
+                    vol.Required(CONF_API_APP_ID): str,
                     vol.Required(CONF_API_APP_SECRET): str,
                     vol.Required(CONF_SID): str,
-                    vol.Required(CONF_ECU_ID): str
+                    vol.Required(CONF_ECU_ID): str,
                 }
             ),
             errors=self._errors,
         )
 
-    async def _test_credentials(self, api_app_id: str, api_app_secret: str, sid: str, ecu_id: str):
+    async def _test_credentials(
+        self, api_app_id: str, api_app_secret: str, sid: str, ecu_id: str
+    ):
         """Return true if credentials is valid."""
         try:
             session = async_create_clientsession(self.hass)
@@ -78,7 +78,7 @@ class APSystemsApiFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
                 api_app_secret=api_app_secret,
                 sid=sid,
                 ecu_id=ecu_id,
-                session=session
+                session=session,
             )
             await client.async_get_data()
             return True
@@ -117,6 +117,4 @@ class APSystemsApiOptionsFlowHandler(config_entries.OptionsFlow):
 
     async def _update_options(self):
         """Update config entry options."""
-        return self.async_create_entry(
-            title="APSystems API", data=self.options
-        )
+        return self.async_create_entry(title="APSystems API", data=self.options)

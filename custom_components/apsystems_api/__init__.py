@@ -16,7 +16,7 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 from homeassistant.helpers.update_coordinator import UpdateFailed
 
-from .api import APSystemsApiApiClient
+from .api import APSystemsApiSystemSummaryClient
 from .const import CONF_API_APP_ID
 from .const import CONF_API_APP_SECRET
 from .const import CONF_SID
@@ -47,15 +47,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     ecu_id = entry.data.get(CONF_ECU_ID)
 
     session = async_get_clientsession(hass)
-    client = APSystemsApiApiClient(
+    client = APSystemsApiSystemSummaryClient(
         api_app_id=api_app_id,
         api_app_secret=api_app_secret,
         sid=sid,
         ecu_id=ecu_id,
-        session=session
+        session=session,
     )
 
-    coordinator = APSystemsApiDataUpdateCoordinator(hass, client=client)
+    coordinator = APSystemsApiSystemSummaryDataUpdateCoordinator(hass, client=client)
     await coordinator.async_refresh()
 
     if not coordinator.last_update_success:
@@ -74,16 +74,16 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     return True
 
 
-class APSystemsApiDataUpdateCoordinator(DataUpdateCoordinator):
+class APSystemsApiSystemSummaryDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
     def __init__(
         self,
         hass: HomeAssistant,
-        client: APSystemsApiApiClient,
+        client: APSystemsApiSystemSummaryClient,
     ) -> None:
         """Initialize."""
-        self.api = client
+        self.client = client
         self.platforms = []
 
         super().__init__(hass, _LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
@@ -91,7 +91,7 @@ class APSystemsApiDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
-            return await self.api.async_get_data()
+            return await self.client.async_get_data()
         except Exception as exception:
             raise UpdateFailed() from exception
 
