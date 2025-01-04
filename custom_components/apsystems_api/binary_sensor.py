@@ -13,9 +13,9 @@ _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 async def async_setup_entry(hass, entry, async_add_devices):
     """Setup binary_sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-    return
-    async_add_devices([APSystemsApiBinarySensor(coordinator, entry)])
+    pass
+    # coordinator = hass.data[DOMAIN][entry.entry_id]
+    # async_add_devices([APSystemsApiBinarySensor(coordinator, entry)])
 
 
 class APSystemsApiBinarySensor(APSystemsApiEntity, BinarySensorEntity):
