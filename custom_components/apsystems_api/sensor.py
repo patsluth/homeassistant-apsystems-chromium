@@ -3,6 +3,11 @@ from .const import DEFAULT_NAME
 from .const import DOMAIN
 from .const import ICON
 from .const import SENSOR
+
+from .const import ATTRIBUTION
+from .const import NAME
+from .const import VERSION
+
 from .entity import APSystemsApiEntity
 import logging
 from homeassistant.const import (
@@ -12,28 +17,39 @@ from dataclasses import fields
 from .api import APSystemsApiBase
 from homeassistant.components.sensor import (
     SensorDeviceClass,
+    SensorEntity
 )
 from homeassistant.helpers.entity import generate_entity_id
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.typing import DiscoveryInfoType
+
 _LOGGER: logging.Logger = logging.getLogger(__package__)
 
 
-async def async_setup_entry(hass, entry, async_add_devices):
-    """Setup sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
+async def async_setup_entry(
+    hass: HomeAssistant,
+    config_entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+    discovery_info: DiscoveryInfoType | None = None,
+) -> None:
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
     _LOGGER.log(logging.WARN, f"PAT TEST {DOMAIN}")
-    _LOGGER.warning("PAT TEST 123 %s", str(entry))
+    _LOGGER.warning("PAT TEST 123 %s", str(config_entry))
 
-    __options = dict(entry.options)
-    _LOGGER.warning("PAT TEST 123 %s", str(__options))
-    _LOGGER.warning("PAT TEST 456 %s", str(dir(entry)))
-    _devices = [
-        APSystemsApiSystemSummarySensor(coordinator, entry, data_key=field.name) 
+    __options = dict(config_entry.options)
+    _LOGGER.warning("PAT TEST __options %s", str(__options))
+    _LOGGER.warning("PAT TEST async_add_entities %s", str(async_add_entities))
+    _LOGGER.warning("PAT TEST discovery_info %s", str(discovery_info))
+
+    await async_add_entities(
+        APSystemsApiSystemSummarySensor(coordinator, config_entry, data_key=field.name) 
         for field in fields(APSystemsApiBase.SystemSummaryData)
-    ]
-    async_add_devices(_devices)
+    )
 
 
-class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
+class APSystemsApiSystemSummarySensor(APSystemsApiEntity, SensorEntity):
     """apsystems_api Sensor class."""
     data_key: str
 
@@ -45,6 +61,8 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
             hass=coordinator.hass
         )
         _LOGGER.warning("PAT TEST self.entity_id  %s", str(self.entity_id))
+        # self._attr_unique_id = f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
+        self._attr_unique_id = f"{super(APSystemsApiSystemSummarySensor, self).unique_id}_{self.name}"
         super().__init__(coordinator, config_entry)
         
     # @property
@@ -62,6 +80,15 @@ class APSystemsApiSystemSummarySensor(APSystemsApiEntity):
     def name(self):
         """Return the name of the sensor."""
         return f"{DEFAULT_NAME}_{SENSOR}_{self.data_key}"
+    
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {(DOMAIN, self.unique_id)},
+            "name": self.name,
+            "model": VERSION,
+            "manufacturer": NAME,
+        }
 
     @property
     def available(self) -> bool:

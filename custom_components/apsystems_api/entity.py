@@ -5,17 +5,18 @@ from .const import ATTRIBUTION
 from .const import DOMAIN
 from .const import NAME
 from .const import VERSION
+from .api import APSystemsApiSystemSummaryClient
 
 
-class APSystemsApiEntity(CoordinatorEntity):
+class APSystemsApiEntity(CoordinatorEntity[APSystemsApiSystemSummaryClient]):
     def __init__(self, coordinator, config_entry):
         super().__init__(coordinator)
         self.config_entry = config_entry
 
-    @property
-    def unique_id(self):
-        """Return a unique ID to use for this entity."""
-        return self.config_entry.entry_id
+    # @property
+    # def unique_id(self):
+    #     """Return a unique ID to use for this entity."""
+    #     return self.config_entry.entry_id
 
     @property
     def device_info(self):

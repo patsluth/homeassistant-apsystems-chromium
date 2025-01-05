@@ -9,7 +9,7 @@ from custom_components.apsystems_api import (
 from custom_components.apsystems_api import (
     async_unload_entry,
 )
-from custom_components.apsystems_api import (
+from custom_components.apsystems_api.coordinator import (
     APSystemsApiSystemSummaryDataUpdateCoordinator,
 )
 from custom_components.apsystems_api.const import (
