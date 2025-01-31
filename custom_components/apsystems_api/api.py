@@ -35,6 +35,21 @@ class APSystemsApiBase:
         year: str
         lifetime: str
 
+    @dataclass
+    class ECUMinutelyEnergyData:
+        today: str
+        time: typing.List[str]
+        power: typing.List[int]
+        energy: typing.List[str]
+
+        @property
+        def latest_power(self) -> str:
+            return self.power[-1]
+
+        @property
+        def latest_energy(self) -> str:
+            return self.energy[-1]
+
     base_url: str = "https://api.apsystemsema.com:9282"
     api_app_id: str
     api_app_secret: str
@@ -138,7 +153,6 @@ class APSystemsApiBase:
 
     async def system_summary(self) -> SystemSummaryData:
         request_path = "/user/api/v2/systems/summary/{sid}".format(sid=self.sid)
-        _LOGGER.warning("PAT PAT PAT request_path: %s", request_path)
         url = urljoin(self.base_url, request_path)
         headers = self._request_headers("GET", request_path)
         response = await self._request("GET", url, headers=headers)
@@ -148,6 +162,28 @@ class APSystemsApiBase:
                 "Non zero response code: {data}".format(data=json.dumps(data, indent=4))
             )
         return APSystemsApiBase.SystemSummaryData(**data["data"])
+
+    async def ecu_minutely_energy(self) -> ECUMinutelyEnergyData:
+        request_path = "/user/api/v2/systems/{sid}/devices/ecu/energy/{eid}".format(
+            sid=self.sid, eid=self.ecu_id
+        )
+        url = urljoin(self.base_url, request_path)
+        headers = self._request_headers("GET", request_path)
+        response = await self._request(
+            "GET", 
+            url,
+            data=dict(
+                energy_level="minutely",
+                date_range=(datetime.now()).strftime("%Y-%m-%d"),
+            ),
+            headers=headers
+        )
+        data = await response.json()
+        if data["code"] != 0:
+            raise APSystemsApiBase.ResponseException(
+                "Non zero response code: {data}".format(data=json.dumps(data, indent=4))
+            )
+        return APSystemsApiBase.ECUMinutelyEnergyData(**data["data"])
 
 # if __name__ == "__main__":
 #     parser = argparse.ArgumentParser()
@@ -171,6 +207,28 @@ class APSystemsApiBase:
 
 
 class APSystemsApiSystemSummaryClient(APSystemsApiBase):
-    async def async_get_data(self) -> APSystemsApiBase.SystemSummaryData:
-        _LOGGER.warning("PAT PAT PAT async_get_data: %s", "async_get_data")
-        return await self.system_summary()
+    @dataclass
+    class SystemData:
+        system_summary: APSystemsApiBase.SystemSummaryData | None
+        ecu_minutely_energy: APSystemsApiBase.ECUMinutelyEnergyData | None
+
+    async def async_get_data(self) -> SystemData:
+        system_data = APSystemsApiSystemSummaryClient.SystemData(
+            system_summary=None,
+            ecu_minutely_energy=None,
+        )
+        try:
+            system_data.system_summary = await self.system_summary()
+        except Exception as exception:
+            _LOGGER.error(
+                "Error fetching system_summary %s",
+                exception,
+            )
+        try:
+            system_data.ecu_minutely_energy = await self.ecu_minutely_energy()
+        except Exception as exception:
+            _LOGGER.error(
+                "Error fetching ecu_minutely_energy %s",
+                exception,
+            )
+        return system_data
