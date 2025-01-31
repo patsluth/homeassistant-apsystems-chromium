@@ -35,16 +35,19 @@ async def async_setup_entry(
     discovery_info: DiscoveryInfoType | None = None,
 ) -> None:
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
-
-    async_add_entities(
+    system_summary_sensors = [
         APSystemsApiSystemSummarySensor(coordinator, config_entry, data_key=field.name) 
         for field in fields(APSystemsApiBase.SystemSummaryData)
-    )
-    
-    async_add_entities(
-        APSystemsApiECUMinutelyEnergyDataSensor(coordinator, config_entry, data_key=field.name) 
+    ]
+    ecu_minutely_energy_sensors = [
+        APSystemsApiECUMinutelyEnergyDataSensor(coordinator, config_entry, data_key=field) 
         for field in ["latest_power", "latest_energy"]
-    )
+    ]
+
+    async_add_entities([
+        *system_summary_sensors,
+        *ecu_minutely_energy_sensors
+    ])
 
 
 class APSystemsApiSystemSummarySensor(APSystemsApiEntity, SensorEntity):
